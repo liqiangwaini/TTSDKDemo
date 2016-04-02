@@ -25,8 +25,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showFmFirstCategory(String tag, ListCategoryCallBack callBack) {
-        RequestEntity entity = new RequestEntity(Api.FM_CATEGORY_LIST);
-        entity.setTag(tag);
+        RequestEntity entity = new RequestEntity(tag, Api.FM_CATEGORY_LIST);
         showCategoryList(entity, callBack);
     }
 
@@ -37,8 +36,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showFmSecondCategory(String tag, String type, ListCategoryCallBack callBack) {
-        RequestEntity entity = new RequestEntity(Api.FM_SUB_CATEGORY_LIST);
-        entity.setTag(tag);
+        RequestEntity entity = new RequestEntity(tag, Api.FM_SUB_CATEGORY_LIST);
         entity.addParams("type", type);
         showCategoryList(entity, callBack);
     }
@@ -51,6 +49,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.FM_LIST_DETAIL);
 
     }
 
@@ -60,9 +59,8 @@ public class AsyncData {
      * @param callBack
      */
     public static void showMusicFmCategory(String tag, ListCategoryCallBack callBack) {
-        RequestEntity entity = new RequestEntity(Api.MUSIC_CATEGORY_LIST);
-        entity.setTag(tag);
-        showCategoryList(entity, callBack);
+        RequestEntity entity = new RequestEntity(tag, Api.MUSIC_CATEGORY_LIST);
+
     }
 
 
@@ -74,7 +72,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showMusicFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
-
+        RequestEntity entity = new RequestEntity(tag, Api.MUSIC_FM_LIST_DETAIL);
     }
 
     /**
@@ -84,8 +82,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showVodFirstCategory(String tag, ListCategoryCallBack callBack) {
-        RequestEntity entity = new RequestEntity(Api.VOD_CATEGORY_LIST);
-        entity.setTag(tag);
+        RequestEntity entity = new RequestEntity(tag, Api.VOD_CATEGORY_LIST);
         showCategoryList(entity, callBack);
     }
 
@@ -97,8 +94,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showVodSecondCategory(String tag, String type, ListCategoryCallBack callBack) {
-        RequestEntity entity = new RequestEntity(Api.VOD_SUB_CATEGORY_LIST);
-        entity.setTag(tag);
+        RequestEntity entity = new RequestEntity(tag, Api.VOD_SUB_CATEGORY_LIST);
         entity.addParams("type", type);
         showCategoryList(entity, callBack);
     }
@@ -110,6 +106,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showAlbumListForType(String tag, String type, ListAlbumCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.VOD_ALBUM_LIST);
 
     }
 
@@ -120,6 +117,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showVodListForType(String tag, String type, ListAlbumCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.VOD_ALBUM_AUDIO_LIST);
 
     }
 
@@ -131,6 +129,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showSearchAlbum(String tag, String keyword, int page, SearchAlbumCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.SEARCH_ALBUM_LIST);
 
     }
 
@@ -142,6 +141,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showSearchVod(String tag, String keyword, int page, SearchVodCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.SEARCH_VOD_LIST);
 
     }
 
@@ -153,6 +153,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showSearchFm(String tag, String keyword, int page, SearchAlbumCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.SEARCH_FM_LIST);
 
     }
 
@@ -163,6 +164,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showSelectFm(String tag, int page, ListFmCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.SELECTED_FM_LIST);
 
     }
 
@@ -174,6 +176,7 @@ public class AsyncData {
      * @param callBack
      */
     public static void showSelectFmVod(String tag, String type, int page, ListVodCallBack callBack) {
+        RequestEntity entity = new RequestEntity(tag, Api.SELECTED_FM_LIST_DETAIL);
 
     }
 
