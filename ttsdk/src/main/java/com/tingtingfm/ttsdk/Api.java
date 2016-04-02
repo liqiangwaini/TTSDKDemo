@@ -4,7 +4,7 @@ package com.tingtingfm.ttsdk;
  * Created by lqsir on 2016/3/28.
  */
 public class Api {
-    public final static String DOMAIN = "";
+    final static String DOMAIN = "";
 
     public final static String FM_CATEGORY_LIST = DOMAIN + "/v2/broadcast/catelist";
 

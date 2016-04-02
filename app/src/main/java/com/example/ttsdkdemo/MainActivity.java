@@ -21,14 +21,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        AsyncData.showFmFirstCategory(new ListCategoryCallBack() {
+
+        AsyncData.showFmFirstCategory("firstcategory", new ListCategoryCallBack() {
+
             @Override
-            public void onSuccess(List<CategoryInfo> categoryInfos) {
+            public void onStart() {
 
             }
 
             @Override
-            public void onFail() {
+            public void onSuccess(List<CategoryInfo> response) {
+
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
 
             }
         });
