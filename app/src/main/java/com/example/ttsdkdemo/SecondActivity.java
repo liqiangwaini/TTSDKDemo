@@ -1,10 +1,10 @@
 package com.example.ttsdkdemo;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +14,11 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
-import com.tingtingfm.ttsdk.callback.ListFmCallBack;
 import com.tingtingfm.ttsdk.entity.CategoryInfo;
-import com.tingtingfm.ttsdk.entity.FmEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +27,7 @@ import butterknife.ButterKnife;
  * 广播、音乐、点播一级分类数据页面
  * Created by lqsir on 2016/4/14.
  */
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends BaseActivity {
     List<CategoryInfo> values;
 
     Context context;
@@ -36,9 +35,10 @@ public class SecondActivity extends AppCompatActivity {
     SecondAdapter adapter;
     @Bind(R.id.grid_second)
     GridView gridView;
-    ProgressDialog dialog;
     String title = "";
+    String rType = "";
     String type = "";
+
     private boolean isResume = false;
 
     @Override
@@ -49,6 +49,7 @@ public class SecondActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         title = getIntent().getStringExtra("title");
+        rType = getIntent().getStringExtra("rtype");
         type = getIntent().getStringExtra("type");
 
         setTitle(title);
@@ -60,18 +61,32 @@ public class SecondActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CategoryInfo info = (CategoryInfo) parent.getAdapter().getItem(position);
 
-                if ("fm".equals(type)) {
+                if ("fm".equals(rType)) {
                     if (info.getSub_catelist() == 1) {
-                            requestSecondData(info.getType());
-                        } else {
-                            requestFmListData(info.getType());
+                        Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
+                        intent.putExtra("title", "听听广播二级分类列表");
+                        intent.putExtra("rtype", rType);
+                        intent.putExtra("type", info.getType());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
+                        intent.putExtra("title", "听听广播频率列表");
+                        intent.putExtra("rtype", rType);
+                        intent.putExtra("type", info.getType());
+                        startActivity(intent);
                     }
-                } else if ("music".equals(type)) {
-//                    CommomFragment dialog = new CommomFragment();
-//                    dialog.show(SecondActivity.this.getFragmentManager(), "loginDialog");
-                    requestFmListData(info.getType());
-                } else if ("vod1".equals(type)) {
-                    requestVodSecondCategory(info.getType());
+                } else if ("music".equals(rType)) {
+                    Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
+                    intent.putExtra("title", "听听音乐频率列表");
+                    intent.putExtra("rtype", rType);
+                    intent.putExtra("type", info.getType());
+                    startActivity(intent);
+                } else if ("vod".equals(rType)) {
+                    Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
+                    intent.putExtra("title", "听听音乐二级分类");
+                    intent.putExtra("rtype", rType);
+                    intent.putExtra("type", info.getType());
+                    startActivity(intent);
                 }
             }
         });
@@ -84,12 +99,20 @@ public class SecondActivity extends AppCompatActivity {
         if (!isResume) {
             isResume = true;
 
-            if ("fm".equals(type)) {
-                requestCategory();
-            } else if ("music".equals(type)) {
+            if ("fm".equals(rType)) {
+                if (TextUtils.isEmpty(type)) {
+                    requestCategory();
+                } else {
+                    requestSecondData(type);
+                }
+            } else if ("music".equals(rType)) {
                 requestMusicCategory();
-            } else if ("vod1".equals(type)) {
-                requestVodFirstCategory();
+            } else if ("vod".equals(rType)) {
+                if (TextUtils.isEmpty(type)) {
+                    requestVodFirstCategory();
+                } else {
+                    requestVodSecondCategory(type);
+                }
             }
         }
     }
@@ -130,31 +153,6 @@ public class SecondActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(List<CategoryInfo> response) {
-//                System.out.println(response.toString());
-                showContent(response.toString());
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
-    }
-
-    private void requestFmListData(String type) {
-        AsyncData.showFmListForType("", type, 1, new ListFmCallBack() {
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(FmEntity response) {
 //                System.out.println(response.toString());
                 showContent(response.toString());
             }
@@ -246,14 +244,6 @@ public class SecondActivity extends AppCompatActivity {
                 dimiss();
             }
         });
-    }
-
-    private void dimiss() {
-        dialog.dismiss();
-    }
-
-    private void show() {
-        dialog = ProgressDialog.show(this, null, null);
     }
 
     private void showContent(String msg) {
