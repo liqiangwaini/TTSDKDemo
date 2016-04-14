@@ -67,7 +67,11 @@ public class SecondActivity extends AppCompatActivity {
                             requestFmListData(info.getType());
                     }
                 } else if ("music".equals(type)) {
+//                    CommomFragment dialog = new CommomFragment();
+//                    dialog.show(SecondActivity.this.getFragmentManager(), "loginDialog");
                     requestFmListData(info.getType());
+                } else if ("vod1".equals(type)) {
+                    requestVodSecondCategory(info.getType());
                 }
             }
         });
@@ -84,6 +88,8 @@ public class SecondActivity extends AppCompatActivity {
                 requestCategory();
             } else if ("music".equals(type)) {
                 requestMusicCategory();
+            } else if ("vod1".equals(type)) {
+                requestVodFirstCategory();
             }
         }
     }
@@ -169,6 +175,56 @@ public class SecondActivity extends AppCompatActivity {
     private void requestMusicCategory() {
         AsyncData.showMusicFmCategory("musicCategory", new ListCategoryCallBack() {
 
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(List<CategoryInfo> response) {
+                values = response;
+                gridView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
+    }
+
+    private void requestVodFirstCategory() {
+        AsyncData.showVodFirstCategory("vodCategory", new ListCategoryCallBack() {
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(List<CategoryInfo> response) {
+                values = response;
+                gridView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
+    }
+
+    private void requestVodSecondCategory(String type) {
+        AsyncData.showVodSecondCategory("vodCategory2", type, new ListCategoryCallBack() {
             @Override
             public void onStart() {
                 show();

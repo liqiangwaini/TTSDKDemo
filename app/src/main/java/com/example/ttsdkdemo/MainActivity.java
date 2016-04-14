@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
 import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
-import com.tingtingfm.ttsdk.entity.CategoryInfo;
 import com.tingtingfm.ttsdk.entity.RadioEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,27 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tt_vod)
     public void clickVod() {
-        AsyncData.showVodFirstCategory("vodCategory", new ListCategoryCallBack() {
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(List<CategoryInfo> response) {
-                showContent(response.toString());
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        intent.putExtra("title", "听听音乐一级分类");
+        intent.putExtra("type", "vod1");
+        startActivity(intent);
     }
 
     @OnClick(R.id.tt_search)
