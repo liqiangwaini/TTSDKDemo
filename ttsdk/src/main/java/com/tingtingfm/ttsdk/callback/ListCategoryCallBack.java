@@ -30,7 +30,9 @@ public abstract class ListCategoryCallBack implements RequestCallback<List<Categ
                 info = new CategoryInfo();
                 JSONObject item = (JSONObject) array.get(i);
                 info.setName(item.getString("name"));
-                info.setSub_catelist(item.getInt("sub_catelist"));
+                if (item.has("sub_catelist")) {
+                    info.setSub_catelist(item.getInt("sub_catelist"));
+                }
                 info.setType(item.getString("type"));
                 values.add(info);
             }

@@ -7,7 +7,7 @@ package com.tingtingfm.ttsdk.entity;
 public class CategoryInfo {
     private String name;
     private String type;
-    private int sub_catelist;
+    private int sub_catelist = -1;
 
     public String getName() {
         return name;

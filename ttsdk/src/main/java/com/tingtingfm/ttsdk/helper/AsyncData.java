@@ -3,6 +3,7 @@ package com.tingtingfm.ttsdk.helper;
 import com.tingtingfm.ttsdk.Api;
 import com.tingtingfm.ttsdk.callback.ListAlbumCallBack;
 import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
+import com.tingtingfm.ttsdk.callback.ListFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchAlbumCallBack;
@@ -48,9 +49,11 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showFmListForType(String tag, String type, int page, ListSelectFmCallBack callBack) {
+    public static void showFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.FM_LIST_DETAIL);
-
+        entity.addParams("type", type);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -73,6 +76,9 @@ public class AsyncData {
      */
     public static void showMusicFmListForType(String tag, String type, int page, ListSelectFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.MUSIC_FM_LIST_DETAIL);
+        entity.addParams("type", type);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -107,7 +113,8 @@ public class AsyncData {
      */
     public static void showAlbumListForType(String tag, String type, ListAlbumCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.VOD_ALBUM_LIST);
-
+        entity.addParams("type", type);
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -118,7 +125,8 @@ public class AsyncData {
      */
     public static void showVodListForType(String tag, String type, ListAlbumCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.VOD_ALBUM_AUDIO_LIST);
-
+        entity.addParams("type", type);
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -130,7 +138,9 @@ public class AsyncData {
      */
     public static void showSearchAlbum(String tag, String keyword, int page, SearchAlbumCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SEARCH_ALBUM_LIST);
-
+        entity.addParams("keywords", keyword);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -142,7 +152,9 @@ public class AsyncData {
      */
     public static void showSearchVod(String tag, String keyword, int page, SearchVodCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SEARCH_VOD_LIST);
-
+        entity.addParams("keywords", keyword);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -154,7 +166,9 @@ public class AsyncData {
      */
     public static void showSearchFm(String tag, String keyword, int page, SearchAlbumCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SEARCH_FM_LIST);
-
+        entity.addParams("keywords", keyword);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -178,7 +192,9 @@ public class AsyncData {
      */
     public static void showSelectFmVod(String tag, String type, int page, ListVodCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SELECTED_FM_LIST_DETAIL);
-
+        entity.addParams("type", type);
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     private static void showCategoryList(RequestEntity requestEntity, RequestCallback callBack) {

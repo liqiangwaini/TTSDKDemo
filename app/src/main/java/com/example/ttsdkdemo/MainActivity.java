@@ -1,35 +1,23 @@
 package com.example.ttsdkdemo;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
 import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
 import com.tingtingfm.ttsdk.entity.CategoryInfo;
-import com.tingtingfm.ttsdk.entity.FmEntity;
+import com.tingtingfm.ttsdk.entity.RadioEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.tt_fm)
-    TextView ttFm;
-    @Bind(R.id.tt_music)
-    TextView ttMusic;
-    @Bind(R.id.tt_vod)
-    TextView ttVod;
-    @Bind(R.id.tt_search)
-    TextView ttSearch;
-    @Bind(R.id.tt_selection)
-    TextView ttSelection;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,54 +35,18 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.tt_fm)
     public void clickFm() {
-        AsyncData.showFmFirstCategory("firstcategory", new ListCategoryCallBack() {
-
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(List<CategoryInfo> response) {
-                showContent(response.toString());
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        intent.putExtra("title", "听听广播一级分类列表");
+        intent.putExtra("type", "fm");
+        startActivity(intent);
     }
 
     @OnClick(R.id.tt_music)
     public void clickMusic() {
-        AsyncData.showMusicFmCategory("musicCategory", new ListCategoryCallBack() {
-
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(List<CategoryInfo> response) {
-                showContent(response.toString());
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        intent.putExtra("title", "听听音乐分类列表");
+        intent.putExtra("type", "music");
+        startActivity(intent);
     }
 
     @OnClick(R.id.tt_vod)
@@ -136,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(FmEntity response) {
+            public void onSuccess(RadioEntity response) {
 
             }
 
