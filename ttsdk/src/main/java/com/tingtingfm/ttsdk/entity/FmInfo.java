@@ -24,4 +24,12 @@ public class FmInfo {
     public void setLive_url(String live_url) {
         this.live_url = live_url;
     }
+
+    @Override
+    public String toString() {
+        return "FmInfo{" +
+                "name='" + name + '\'' +
+                ", live_url='" + live_url + '\'' +
+                '}';
+    }
 }

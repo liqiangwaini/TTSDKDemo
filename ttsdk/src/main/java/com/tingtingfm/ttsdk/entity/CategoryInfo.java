@@ -25,11 +25,24 @@ public class CategoryInfo {
         this.type = type;
     }
 
+    /**
+     * 是否存在二级分类 1:存在 0:不存在
+     * @return
+     */
     public int getSub_catelist() {
         return sub_catelist;
     }
 
     public void setSub_catelist(int sub_catelist) {
         this.sub_catelist = sub_catelist;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryInfo{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", sub_catelist=" + sub_catelist +
+                '}';
     }
 }

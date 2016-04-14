@@ -1,5 +1,12 @@
 package com.tingtingfm.ttsdk.net;
 
+import android.os.Handler;
+
+import com.tingtingfm.ttsdk.utils.BaseUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,14 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
-
-import android.os.Handler;
-
-import com.tingtingfm.ttsdk.utils.BaseUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public final class HttpRequest implements Runnable {
@@ -52,7 +51,12 @@ public final class HttpRequest implements Runnable {
         String message = "";
         try {
             if (requestCallback != null) {
-                requestCallback.onStart();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestCallback.onStart();
+                    }
+                });
             }
 
             // 添加参数
@@ -83,10 +87,7 @@ public final class HttpRequest implements Runnable {
                 if (statusCode == HttpURLConnection.HTTP_OK) {
                     message = inputStreamToString(connection.getInputStream());
 
-                    message = "{'isError':false,'errorType':0,'errorMessage':'','result':{'city':'北京','cityid':'101010100','temp':'17','WD':'西南风','WS':'2级','SD':'54%','WSE':'2','time':'23:15','isRadar':'1','Radar':'JC_RADAR_AZ9010_JB','njd':'暂无实况','qy':'1016'}}";
-
                     // 设置回调函数
-
                     final Response responseInJson = stringToResponse(message);
                     if (responseInJson.hasError()) {
                         handleNetworkError(responseInJson.getError());
@@ -148,7 +149,7 @@ public final class HttpRequest implements Runnable {
     Response stringToResponse(String message) throws JSONException {
         Response response = new Response();
         JSONObject object = new JSONObject(message);
-        response.setErron(object.getInt("erron"));
+        response.setErron(object.getInt("errno"));
         response.setError(object.getString("error"));
         response.setData(object.getJSONObject("data").toString());
 

@@ -3,14 +3,14 @@ package com.tingtingfm.ttsdk.helper;
 import com.tingtingfm.ttsdk.Api;
 import com.tingtingfm.ttsdk.callback.ListAlbumCallBack;
 import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
-import com.tingtingfm.ttsdk.callback.ListFmCallBack;
+import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchAlbumCallBack;
 import com.tingtingfm.ttsdk.callback.SearchVodCallBack;
 import com.tingtingfm.ttsdk.net.DefaultThreadPool;
 import com.tingtingfm.ttsdk.net.HttpRequest;
+import com.tingtingfm.ttsdk.net.RequestCallback;
 import com.tingtingfm.ttsdk.net.RequestEntity;
-import com.tingtingfm.ttsdk.net.RequestManager;
 
 /**
  * 异步请求
@@ -48,7 +48,7 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
+    public static void showFmListForType(String tag, String type, int page, ListSelectFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.FM_LIST_DETAIL);
 
     }
@@ -60,7 +60,7 @@ public class AsyncData {
      */
     public static void showMusicFmCategory(String tag, ListCategoryCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.MUSIC_CATEGORY_LIST);
-
+        showCategoryList(entity, callBack);
     }
 
 
@@ -71,7 +71,7 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showMusicFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
+    public static void showMusicFmListForType(String tag, String type, int page, ListSelectFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.MUSIC_FM_LIST_DETAIL);
     }
 
@@ -163,9 +163,10 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showSelectFm(String tag, int page, ListFmCallBack callBack) {
+    public static void showSelectFm(String tag, int page, ListSelectFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SELECTED_FM_LIST);
-
+        entity.addParams("page", page+"");
+        showCategoryList(entity, callBack);
     }
 
     /**
@@ -180,7 +181,7 @@ public class AsyncData {
 
     }
 
-    private static void showCategoryList(RequestEntity requestEntity, ListCategoryCallBack callBack) {
+    private static void showCategoryList(RequestEntity requestEntity, RequestCallback callBack) {
         HttpRequest request = ConfigurationManager.getInstance().getManager().createRequest(
                 requestEntity.getUrl(), requestEntity.getParameters(), callBack);
         DefaultThreadPool.getInstance().execute(request);

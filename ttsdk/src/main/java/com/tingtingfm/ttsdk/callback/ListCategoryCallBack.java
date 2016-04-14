@@ -3,6 +3,11 @@ package com.tingtingfm.ttsdk.callback;
 import com.tingtingfm.ttsdk.entity.CategoryInfo;
 import com.tingtingfm.ttsdk.net.RequestCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +18,25 @@ public abstract class ListCategoryCallBack implements RequestCallback<List<Categ
 
     @Override
     public List<CategoryInfo> parseNetworkResponse(String content) {
-        return null;
+        List<CategoryInfo> values = new ArrayList<CategoryInfo>();
+
+        try {
+            JSONObject object = new JSONObject(content);
+
+            JSONArray array = object.getJSONArray("category_list");
+
+            CategoryInfo info = null;
+            for (int i = 0; i < array.length(); i++) {
+                info = new CategoryInfo();
+                JSONObject item = (JSONObject) array.get(i);
+                info.setName(item.getString("name"));
+                info.setSub_catelist(item.getInt("sub_catelist"));
+                info.setType(item.getString("type"));
+                values.add(info);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return values;
     }
 }
