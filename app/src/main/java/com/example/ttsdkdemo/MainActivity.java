@@ -6,10 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
-import com.tingtingfm.ttsdk.entity.RadioEntity;
-import com.tingtingfm.ttsdk.helper.AsyncData;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -63,27 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tt_selection)
     public void clickSelection() {
-        AsyncData.showSelectFm("selectFm", 1, new ListSelectFmCallBack() {
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(RadioEntity response) {
-
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, FmListActivity.class);
+        intent.putExtra("title", "听听精选");
+        intent.putExtra("rtype", "select");
+        startActivity(intent);
     }
 
     private void show() {

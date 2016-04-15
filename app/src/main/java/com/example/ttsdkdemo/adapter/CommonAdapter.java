@@ -8,41 +8,43 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.ttsdkdemo.R;
-import com.tingtingfm.ttsdk.entity.VodInfo;
 
 import java.util.List;
 
-public class ThreeAdapter extends BaseAdapter {
-    List<VodInfo> vodInfos;
+/**
+ * Created by lenovo on 2016/4/15.
+ */
+public abstract class CommonAdapter<T> extends BaseAdapter {
     Context context;
+    List<T> infos;
 
-    public ThreeAdapter(Context context) {
+    public CommonAdapter(Context context) {
         this.context = context;
     }
 
-    public void setVodInfos(List<VodInfo> vodInfos) {
-        this.vodInfos = vodInfos;
+    public void setInfos(List<T> infos) {
+        this.infos = infos;
     }
 
     @Override
     public int getCount() {
-        if (vodInfos == null)
+        if (infos == null)
             return 0;
 
-        return vodInfos.size();
+        return infos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if (vodInfos == null)
+        if (infos == null)
             return null;
 
-        return vodInfos.get(position);
+        return infos.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        if (vodInfos == null)
+        if (infos == null)
             return 0;
 
         return position;
@@ -50,7 +52,7 @@ public class ThreeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (vodInfos == null)
+        if (infos == null)
             return null;
 
         TextView textView;
@@ -63,7 +65,9 @@ public class ThreeAdapter extends BaseAdapter {
         }
 
         textView.setBackgroundResource(R.drawable.bg);
-        textView.setText(vodInfos.get(position).getName());
+        convert(textView, infos.get(position));
         return convertView;
     }
+
+    public abstract void  convert(TextView textView, T t);
 }

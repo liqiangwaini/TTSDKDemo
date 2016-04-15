@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.ttsdkdemo.adapter.ThreeAdapter;
+import com.example.ttsdkdemo.adapter.VodAdapter;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchVodCallBack;
 import com.tingtingfm.ttsdk.entity.VodInfo;
@@ -26,7 +26,7 @@ public class VodListActivity extends BaseActivity {
 
     String title = "";
     String rType = "";
-    ThreeAdapter adapter;
+    VodAdapter adapter;
     private boolean isResume = false;
     private String type;
     private String keyWords;
@@ -44,7 +44,7 @@ public class VodListActivity extends BaseActivity {
         keyWords = getIntent().getStringExtra("keywords");
 
         setTitle(title);
-        adapter = new ThreeAdapter(this);
+        adapter = new VodAdapter(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,6 +64,8 @@ public class VodListActivity extends BaseActivity {
                 requestVodListData(type);
             } else if ("search".equals(rType)) {
                 requestSearchVodListData(keyWords, 1);
+            } else if ("select".equals(rType)) {
+
             }
         }
     }
@@ -77,7 +79,7 @@ public class VodListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(SearchVodEntity response) {
-                adapter.setVodInfos(response.getData());
+                adapter.setInfos(response.getData());
                 listView.setAdapter(adapter);
             }
 
@@ -102,7 +104,7 @@ public class VodListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<VodInfo> response) {
-                adapter.setVodInfos(response);
+                adapter.setInfos(response);
                 listView.setAdapter(adapter);
             }
 
@@ -118,4 +120,28 @@ public class VodListActivity extends BaseActivity {
         });
     }
 
+    private void requestSelectVodListData(String type, int page) {
+        AsyncData.showSelectFmVod("", type, page, new ListVodCallBack() {
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(List<VodInfo> response) {
+                adapter.setInfos(response);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
+    }
 }

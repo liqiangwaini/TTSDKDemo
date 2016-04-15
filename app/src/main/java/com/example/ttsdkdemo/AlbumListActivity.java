@@ -85,7 +85,7 @@ public class AlbumListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<AlbumInfo> response) {
-                adapter.setAlbumInfos(response);
+                adapter.setInfos(response);
                 listView.setAdapter(adapter);
             }
 
@@ -110,7 +110,7 @@ public class AlbumListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(SearchAlbumEntity response) {
-                adapter.setAlbumInfos(response.getData());
+                adapter.setInfos(response.getData());
                 listView.setAdapter(adapter);
             }
 

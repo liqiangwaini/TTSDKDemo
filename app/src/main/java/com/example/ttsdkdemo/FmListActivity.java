@@ -1,15 +1,20 @@
 package com.example.ttsdkdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.ttsdkdemo.adapter.FmAdapter;
+import com.example.ttsdkdemo.adapter.SelectFmAdapter;
 import com.tingtingfm.ttsdk.callback.ListFmCallBack;
+import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
 import com.tingtingfm.ttsdk.callback.SearchFmCallBack;
 import com.tingtingfm.ttsdk.entity.FmEntity;
 import com.tingtingfm.ttsdk.entity.FmInfo;
+import com.tingtingfm.ttsdk.entity.RadioEntity;
+import com.tingtingfm.ttsdk.entity.RadioInfo;
 import com.tingtingfm.ttsdk.entity.search.SearchFmEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
@@ -29,6 +34,7 @@ public class FmListActivity extends BaseActivity {
     private String type;
 
     FmAdapter adapter;
+    SelectFmAdapter selectFmAdapter;
     private String keyWords;
 
     @Override
@@ -49,8 +55,17 @@ public class FmListActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FmInfo info = (FmInfo) parent.getAdapter().getItem(position);
-                showContent(info.toString());
+                if ("select".equals(rType)) {
+                    RadioInfo radioInfo = (RadioInfo) parent.getAdapter().getItem(position);
+                    Intent intent = new Intent(FmListActivity.this, VodListActivity.class);
+                    intent.putExtra("rtype", rType);
+                    intent.putExtra("type", radioInfo.getType());
+                    intent.putExtra("title", "听听精选下音频列表 - " + radioInfo.getName());
+                    startActivity(intent);
+                } else {
+                    FmInfo info = (FmInfo) parent.getAdapter().getItem(position);
+                    showContent(info.toString());
+                }
             }
         });
     }
@@ -67,9 +82,37 @@ public class FmListActivity extends BaseActivity {
                 requestMusicListData(type);
             } else if ("search".equals(rType)) {
                 requestSearchFmListData(keyWords, 1);
+            } else if ("select".equals(rType)) {
+                requestSelectFmListData(1);
             }
         }
 
+    }
+
+    private void requestSelectFmListData(int page) {
+        AsyncData.showSelectFm("selectFm", page, new ListSelectFmCallBack() {
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(RadioEntity response) {
+                selectFmAdapter = new SelectFmAdapter(FmListActivity.this);
+                selectFmAdapter.setInfos(response.getFmList());
+                listView.setAdapter(selectFmAdapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
     }
 
     private void requestSearchFmListData(String keyWords, int page) {
@@ -81,7 +124,7 @@ public class FmListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(SearchFmEntity response) {
-                adapter.setFmInfos(response.getData());
+                adapter.setInfos(response.getData());
                 listView.setAdapter(adapter);
             }
 
@@ -106,7 +149,7 @@ dimiss();
 
             @Override
             public void onSuccess(FmEntity response) {
-                adapter.setFmInfos(response.getFmList());
+                adapter.setInfos(response.getFmList());
                 listView.setAdapter(adapter);
             }
 
@@ -132,7 +175,7 @@ dimiss();
 
             @Override
             public void onSuccess(FmEntity response) {
-                adapter.setFmInfos(response.getFmList());
+                adapter.setInfos(response.getFmList());
                 listView.setAdapter(adapter);
             }
 
