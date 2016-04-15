@@ -123,7 +123,7 @@ public class AsyncData {
      * @param type
      * @param callBack
      */
-    public static void showVodListForType(String tag, String type, ListAlbumCallBack callBack) {
+    public static void showVodListForType(String tag, String type, ListVodCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.VOD_ALBUM_AUDIO_LIST);
         entity.addParams("type", type);
         showCategoryList(entity, callBack);

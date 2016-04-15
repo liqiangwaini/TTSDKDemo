@@ -1,6 +1,7 @@
 package com.example.ttsdkdemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,32 +11,33 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tingtingfm.ttsdk.callback.ListFmCallBack;
-import com.tingtingfm.ttsdk.entity.FmEntity;
+import com.tingtingfm.ttsdk.callback.ListAlbumCallBack;
+import com.tingtingfm.ttsdk.entity.AlbumInfo;
 import com.tingtingfm.ttsdk.helper.AsyncData;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by liqiang on 16/4/14.
+ * Created by lenovo on 2016/4/15.
  */
-public class ThreeActivity extends BaseActivity {
+public class AlbumListActivity extends BaseActivity {
     @Bind(R.id.list_three)
     ListView listView;
 
     Context context;
-    FmEntity fmEntity;
+    List<AlbumInfo> albumInfos;
 
     String title = "";
     String rType = "";
+    ThreeAdapter adapter;
     private boolean isResume = false;
     private String type;
 
-    ThreeAdapter adapter;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_three);
         ButterKnife.bind(this);
@@ -46,13 +48,21 @@ public class ThreeActivity extends BaseActivity {
         type = getIntent().getStringExtra("type");
 
         setTitle(title);
-
         adapter = new ThreeAdapter();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showContent(fmEntity.getFmList().get(position).toString());
+                AlbumInfo info = (AlbumInfo) parent.getAdapter().getItem(position);
+
+                Intent intent = new Intent();
+                intent.putExtra("rtype", rType);
+                intent.putExtra("type", info.getType());
+                if ("vod".equals(rType)) {
+                    intent.setClass(AlbumListActivity.this, VodListActivity.class);
+                    intent.putExtra("title", "听听点播专辑下音频列表 - " + info.getName());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -60,30 +70,30 @@ public class ThreeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         if (!isResume) {
             isResume = true;
-            if ("fm".equals(rType)) {
-                requestFmListData(type);
-            } else if ("music".equals(rType)) {
-                requestMusicListData(type);
+            if ("vod".equals(rType)) {
+                requestAlbumListData(type);
+            } else if ("search".equals(rType)) {
+                requestSearchAlbumListData(type);
             }
         }
+    }
+
+    private void requestSearchAlbumListData(String type) {
 
     }
 
-    private void requestFmListData(String type) {
-        AsyncData.showFmListForType("", type, 1, new ListFmCallBack() {
+    private void requestAlbumListData(String type) {
+        AsyncData.showAlbumListForType("", type, new ListAlbumCallBack() {
             @Override
             public void onStart() {
                 show();
             }
 
             @Override
-            public void onSuccess(FmEntity response) {
-//                System.out.println(response.toString());
-//                showContent(response.toString());
-                fmEntity = response;
+            public void onSuccess(List<AlbumInfo> response) {
+                albumInfos = response;
                 listView.setAdapter(adapter);
             }
 
@@ -99,53 +109,28 @@ public class ThreeActivity extends BaseActivity {
         });
     }
 
-    public void requestMusicListData(String type) {
-        AsyncData.showMusicFmListForType("", type, 1, new ListFmCallBack() {
-
-            @Override
-            public void onStart() {
-                show();
-            }
-
-            @Override
-            public void onSuccess(FmEntity response) {
-                fmEntity = response;
-                listView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFail(String errorMessage) {
-
-            }
-
-            @Override
-            public void onCancel() {
-                dimiss();
-            }
-        });
-    }
 
     class ThreeAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            if (fmEntity == null)
+            if (albumInfos == null)
                 return 0;
 
-            return fmEntity.getFmList().size();
+            return albumInfos.size();
         }
 
         @Override
         public Object getItem(int position) {
-            if (fmEntity == null)
+            if (albumInfos == null)
                 return null;
 
-            return fmEntity.getFmList().get(position);
+            return albumInfos.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            if (fmEntity == null)
+            if (albumInfos == null)
                 return 0;
 
             return position;
@@ -153,7 +138,7 @@ public class ThreeActivity extends BaseActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (fmEntity == null)
+            if (albumInfos == null)
                 return null;
 
             TextView textView;
@@ -166,7 +151,7 @@ public class ThreeActivity extends BaseActivity {
             }
 
             textView.setBackgroundResource(R.drawable.bg);
-            textView.setText(fmEntity.getFmList().get(position).getName());
+            textView.setText(albumInfos.get(position).getName());
             return convertView;
         }
     }

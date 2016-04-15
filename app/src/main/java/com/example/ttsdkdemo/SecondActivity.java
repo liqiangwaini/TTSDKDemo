@@ -59,32 +59,33 @@ public class SecondActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CategoryInfo info = (CategoryInfo) parent.getAdapter().getItem(position);
 
+                Intent intent = new Intent();
+                intent.putExtra("rtype", rType);
+                intent.putExtra("type", info.getType());
                 if ("fm".equals(rType)) {
                     if (info.getSub_catelist() == 1) {
-                        Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
+                        intent.setClass(SecondActivity.this, SecondActivity.class);
                         intent.putExtra("title", "听听广播二级分类列表");
-                        intent.putExtra("rtype", rType);
-                        intent.putExtra("type", info.getType());
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
+                        intent.setClass(SecondActivity.this, FmListActivity.class);
                         intent.putExtra("title", "听听广播频率列表 - " + info.getName());
-                        intent.putExtra("rtype", rType);
-                        intent.putExtra("type", info.getType());
                         startActivity(intent);
                     }
                 } else if ("music".equals(rType)) {
-                    Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
+                    intent.setClass(SecondActivity.this, FmListActivity.class);
                     intent.putExtra("title", "听听音乐频率列表 - " + info.getName());
-                    intent.putExtra("rtype", rType);
-                    intent.putExtra("type", info.getType());
                     startActivity(intent);
                 } else if ("vod".equals(rType)) {
-                    Intent intent = new Intent(SecondActivity.this, SecondActivity.class);
-                    intent.putExtra("title", "听听音乐二级分类");
-                    intent.putExtra("rtype", rType);
-                    intent.putExtra("type", info.getType());
-                    startActivity(intent);
+                    if (info.getSub_catelist() == 1) {
+                        intent.setClass(SecondActivity.this, SecondActivity.class);
+                        intent.putExtra("title", "听听音乐二级分类 - " + info.getName());
+                        startActivity(intent);
+                    } else {
+                        intent.setClass(SecondActivity.this, AlbumListActivity.class);
+                        intent.putExtra("title", "听听音乐专辑列表 - " + info.getName());
+                        startActivity(intent);
+                    }
                 }
             }
         });

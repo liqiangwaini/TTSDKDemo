@@ -8,7 +8,7 @@ public class VodInfo {
     private String name;
     private int duration;
     private String hls;
-    private int m4a;
+    private String m4a;
 
     public String getName() {
         return name;
@@ -34,11 +34,21 @@ public class VodInfo {
         this.hls = hls;
     }
 
-    public int getM4a() {
+    public String getM4a() {
         return m4a;
     }
 
-    public void setM4a(int m4a) {
+    public void setM4a(String  m4a) {
         this.m4a = m4a;
+    }
+
+    @Override
+    public String toString() {
+        return "VodInfo{" +
+                "name='" + name + '\'' +
+                ", duration=" + duration +
+                ", hls='" + hls + '\'' +
+                ", m4a='" + m4a + '\'' +
+                '}';
     }
 }
