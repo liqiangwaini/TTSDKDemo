@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.ttsdkdemo.adapter.VodAdapter;
+import com.tingtingfm.ttsdk.callback.ListSelectVodCallBack;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchVodCallBack;
 import com.tingtingfm.ttsdk.entity.VodInfo;
@@ -60,12 +61,12 @@ public class VodListActivity extends BaseActivity {
         super.onResume();
         if (!isResume) {
             isResume = true;
-            if ("vod".equals(rType)) {
+            if ("vod".equals(rType) || "searchfm".equals(rType)) {
                 requestVodListData(type);
             } else if ("search".equals(rType)) {
                 requestSearchVodListData(keyWords, 1);
             } else if ("select".equals(rType)) {
-
+                requestSelectVodListData(type, 1);
             }
         }
     }
@@ -121,7 +122,7 @@ public class VodListActivity extends BaseActivity {
     }
 
     private void requestSelectVodListData(String type, int page) {
-        AsyncData.showSelectFmVod("", type, page, new ListVodCallBack() {
+        AsyncData.showSelectFmVod("", type, page, new ListSelectVodCallBack() {
             @Override
             public void onStart() {
                 show();

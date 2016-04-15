@@ -14,7 +14,7 @@ public class RadioEntity {
     }
 
     public void setFmList(List<RadioInfo> list) {
-        this.fm_list = fm_list;
+        this.fm_list = list;
     }
 
     public int getTotal() {
@@ -27,8 +27,8 @@ public class RadioEntity {
 
     @Override
     public String toString() {
-        return "FmEntity{" +
-                "fm_list=" + fm_list.toString() +
+        return "RadioEntity{" +
+                "fm_list=" + fm_list +
                 ", total=" + total +
                 '}';
     }

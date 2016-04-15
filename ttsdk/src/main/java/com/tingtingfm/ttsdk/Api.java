@@ -4,8 +4,8 @@ package com.tingtingfm.ttsdk;
  * Created by lqsir on 2016/3/28.
  */
 public class Api {
-    public final static String DOMAIN = "http://open.api.tingtingfm.com";
-//    public final static String DOMAIN = "http://open.api.dev.ting-ting.cn";
+//    public final static String DOMAIN = "http://open.api.tingtingfm.com";
+    public final static String DOMAIN = "http://open.api.dev.ting-ting.cn";
 
     public final static String FM_CATEGORY_LIST = DOMAIN + "/v2/broadcast/catelist";
 

@@ -52,13 +52,16 @@ public class AlbumListActivity extends BaseActivity {
                 AlbumInfo info = (AlbumInfo) parent.getAdapter().getItem(position);
 
                 Intent intent = new Intent();
-                intent.putExtra("rtype", rType);
+                intent.setClass(AlbumListActivity.this, VodListActivity.class);
                 intent.putExtra("type", info.getType());
                 if ("vod".equals(rType)) {
-                    intent.setClass(AlbumListActivity.this, VodListActivity.class);
+                    intent.putExtra("rtype", rType);
                     intent.putExtra("title", "听听点播专辑下音频列表 - " + info.getName());
-                    startActivity(intent);
+                } else if ("search".equals(rType)) {
+                    intent.putExtra("rtype", "searchfm");
+                    intent.putExtra("title", "听听搜索-搜专辑下音频列表 - " + info.getName());
                 }
+                startActivity(intent);
             }
         });
     }

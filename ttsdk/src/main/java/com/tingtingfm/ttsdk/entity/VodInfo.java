@@ -9,7 +9,7 @@ public class VodInfo {
     private int duration;
     private String hls;
     private String m4a;
-    private String content_class_name;
+    private String content_class_name = "";
 
     public String getName() {
         return name;

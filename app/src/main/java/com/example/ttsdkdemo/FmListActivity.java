@@ -51,6 +51,7 @@ public class FmListActivity extends BaseActivity {
         setTitle(title);
 
         adapter = new FmAdapter(this);
+        selectFmAdapter = new SelectFmAdapter(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,14 +99,13 @@ public class FmListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(RadioEntity response) {
-                selectFmAdapter = new SelectFmAdapter(FmListActivity.this);
                 selectFmAdapter.setInfos(response.getFmList());
                 listView.setAdapter(selectFmAdapter);
             }
 
             @Override
             public void onFail(String errorMessage) {
-
+                System.out.println(errorMessage);
             }
 
             @Override

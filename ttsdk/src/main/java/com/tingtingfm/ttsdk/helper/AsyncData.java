@@ -5,6 +5,7 @@ import com.tingtingfm.ttsdk.callback.ListAlbumCallBack;
 import com.tingtingfm.ttsdk.callback.ListCategoryCallBack;
 import com.tingtingfm.ttsdk.callback.ListFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
+import com.tingtingfm.ttsdk.callback.ListSelectVodCallBack;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchAlbumCallBack;
 import com.tingtingfm.ttsdk.callback.SearchFmCallBack;
@@ -191,7 +192,7 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showSelectFmVod(String tag, String type, int page, ListVodCallBack callBack) {
+    public static void showSelectFmVod(String tag, String type, int page, ListSelectVodCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SELECTED_FM_LIST_DETAIL);
         entity.addParams("type", type);
         entity.addParams("page", page+"");
