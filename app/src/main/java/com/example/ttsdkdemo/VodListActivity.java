@@ -1,17 +1,15 @@
 package com.example.ttsdkdemo;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.example.ttsdkdemo.adapter.ThreeAdapter;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
+import com.tingtingfm.ttsdk.callback.SearchVodCallBack;
 import com.tingtingfm.ttsdk.entity.VodInfo;
+import com.tingtingfm.ttsdk.entity.search.SearchVodEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import java.util.List;
@@ -26,14 +24,12 @@ public class VodListActivity extends BaseActivity {
     @Bind(R.id.list_three)
     ListView listView;
 
-    Context context;
-    List<VodInfo> vodInfos;
-
     String title = "";
     String rType = "";
     ThreeAdapter adapter;
     private boolean isResume = false;
     private String type;
+    private String keyWords;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,13 +38,13 @@ public class VodListActivity extends BaseActivity {
         setContentView(R.layout.act_three);
         ButterKnife.bind(this);
 
-        context = this;
         title = getIntent().getStringExtra("title");
         rType = getIntent().getStringExtra("rtype");
         type = getIntent().getStringExtra("type");
+        keyWords = getIntent().getStringExtra("keywords");
 
         setTitle(title);
-        adapter = new ThreeAdapter();
+        adapter = new ThreeAdapter(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,21 +63,21 @@ public class VodListActivity extends BaseActivity {
             if ("vod".equals(rType)) {
                 requestVodListData(type);
             } else if ("search".equals(rType)) {
-//                requestSearchAlbumListData(type);
+                requestSearchVodListData(keyWords, 1);
             }
         }
     }
 
-    private void requestVodListData(String type) {
-        AsyncData.showVodListForType("", type, new ListVodCallBack() {
+    private void requestSearchVodListData(String keyWords, int page) {
+        AsyncData.showSearchVod("", keyWords, page, new SearchVodCallBack() {
             @Override
             public void onStart() {
                 show();
             }
 
             @Override
-            public void onSuccess(List<VodInfo> response) {
-                vodInfos = response;
+            public void onSuccess(SearchVodEntity response) {
+                adapter.setVodInfos(response.getData());
                 listView.setAdapter(adapter);
             }
 
@@ -97,51 +93,29 @@ public class VodListActivity extends BaseActivity {
         });
     }
 
-    class ThreeAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            if (vodInfos == null)
-                return 0;
-
-            return vodInfos.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            if (vodInfos == null)
-                return null;
-
-            return vodInfos.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            if (vodInfos == null)
-                return 0;
-
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (vodInfos == null)
-                return null;
-
-            TextView textView;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_name, null);
-                textView = (TextView) convertView.findViewById(R.id.item_name);
-                convertView.setTag(textView);
-            } else {
-                textView = (TextView) convertView.getTag();
+    private void requestVodListData(String type) {
+        AsyncData.showVodListForType("", type, new ListVodCallBack() {
+            @Override
+            public void onStart() {
+                show();
             }
 
-            textView.setBackgroundResource(R.drawable.bg);
-            textView.setText(vodInfos.get(position).getName());
-            return convertView;
-        }
-    }
+            @Override
+            public void onSuccess(List<VodInfo> response) {
+                adapter.setVodInfos(response);
+                listView.setAdapter(adapter);
+            }
 
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
+    }
 
 }

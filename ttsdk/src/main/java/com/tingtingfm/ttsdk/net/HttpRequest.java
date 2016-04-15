@@ -2,8 +2,6 @@ package com.tingtingfm.ttsdk.net;
 
 import android.os.Handler;
 
-import com.tingtingfm.ttsdk.utils.BaseUtils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -65,10 +64,10 @@ public final class HttpRequest implements Runnable {
                 for (final RequestParameter p : parameter) {
                     if (paramBuffer.length() == 0) {
                         paramBuffer.append(p.getName() + "="
-                                + BaseUtils.UrlEncodeUnicode(p.getValue()));
+                                + URLEncoder.encode(p.getValue(), "UTF-8"));
                     } else {
                         paramBuffer.append("&" + p.getName() + "="
-                                + BaseUtils.UrlEncodeUnicode(p.getValue()));
+                                + URLEncoder.encode(p.getValue(), "UTF-8"));
                     }
                 }
 

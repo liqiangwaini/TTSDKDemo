@@ -55,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.tt_search)
     public void clickSearch() {
-
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        intent.putExtra("title", "听听搜索");
+        intent.putExtra("rtype", "search");
+        startActivity(intent);
     }
 
     @OnClick(R.id.tt_selection)

@@ -1,17 +1,16 @@
 package com.example.ttsdkdemo;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.example.ttsdkdemo.adapter.FmAdapter;
 import com.tingtingfm.ttsdk.callback.ListFmCallBack;
+import com.tingtingfm.ttsdk.callback.SearchFmCallBack;
 import com.tingtingfm.ttsdk.entity.FmEntity;
+import com.tingtingfm.ttsdk.entity.FmInfo;
+import com.tingtingfm.ttsdk.entity.search.SearchFmEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import butterknife.Bind;
@@ -24,15 +23,13 @@ public class FmListActivity extends BaseActivity {
     @Bind(R.id.list_three)
     ListView listView;
 
-    Context context;
-    FmEntity fmEntity;
-
     String title = "";
     String rType = "";
     private boolean isResume = false;
     private String type;
 
-    ThreeAdapter adapter;
+    FmAdapter adapter;
+    private String keyWords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +37,20 @@ public class FmListActivity extends BaseActivity {
         setContentView(R.layout.act_three);
         ButterKnife.bind(this);
 
-        context = this;
         title = getIntent().getStringExtra("title");
         rType = getIntent().getStringExtra("rtype");
         type = getIntent().getStringExtra("type");
+        keyWords = getIntent().getStringExtra("keywords");
 
         setTitle(title);
 
-        adapter = new ThreeAdapter();
+        adapter = new FmAdapter(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showContent(fmEntity.getFmList().get(position).toString());
+                FmInfo info = (FmInfo) parent.getAdapter().getItem(position);
+                showContent(info.toString());
             }
         });
     }
@@ -67,9 +65,36 @@ public class FmListActivity extends BaseActivity {
                 requestFmListData(type);
             } else if ("music".equals(rType)) {
                 requestMusicListData(type);
+            } else if ("search".equals(rType)) {
+                requestSearchFmListData(keyWords, 1);
             }
         }
 
+    }
+
+    private void requestSearchFmListData(String keyWords, int page) {
+        AsyncData.showSearchFm("", keyWords, page, new SearchFmCallBack() {
+            @Override
+            public void onStart() {
+                show();
+            }
+
+            @Override
+            public void onSuccess(SearchFmEntity response) {
+                adapter.setFmInfos(response.getData());
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+dimiss();
+            }
+        });
     }
 
     private void requestFmListData(String type) {
@@ -81,9 +106,7 @@ public class FmListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(FmEntity response) {
-//                System.out.println(response.toString());
-//                showContent(response.toString());
-                fmEntity = response;
+                adapter.setFmInfos(response.getFmList());
                 listView.setAdapter(adapter);
             }
 
@@ -109,7 +132,7 @@ public class FmListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(FmEntity response) {
-                fmEntity = response;
+                adapter.setFmInfos(response.getFmList());
                 listView.setAdapter(adapter);
             }
 
@@ -125,49 +148,6 @@ public class FmListActivity extends BaseActivity {
         });
     }
 
-    class ThreeAdapter extends BaseAdapter {
 
-        @Override
-        public int getCount() {
-            if (fmEntity == null)
-                return 0;
 
-            return fmEntity.getFmList().size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            if (fmEntity == null)
-                return null;
-
-            return fmEntity.getFmList().get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            if (fmEntity == null)
-                return 0;
-
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (fmEntity == null)
-                return null;
-
-            TextView textView;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_name, null);
-                textView = (TextView) convertView.findViewById(R.id.item_name);
-                convertView.setTag(textView);
-            } else {
-                textView = (TextView) convertView.getTag();
-            }
-
-            textView.setBackgroundResource(R.drawable.bg);
-            textView.setText(fmEntity.getFmList().get(position).getName());
-            return convertView;
-        }
-    }
 }

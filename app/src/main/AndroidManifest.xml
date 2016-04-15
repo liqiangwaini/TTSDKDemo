@@ -29,6 +29,7 @@
         <activity android:name=".FmListActivity" />
         <activity android:name=".AlbumListActivity"/>
         <activity android:name=".VodListActivity" />
+        <activity android:name=".SearchActivity" />
     </application>
 
 </manifest>

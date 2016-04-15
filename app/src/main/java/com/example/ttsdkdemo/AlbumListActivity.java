@@ -1,18 +1,16 @@
 package com.example.ttsdkdemo;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.example.ttsdkdemo.adapter.AlbumAdapter;
 import com.tingtingfm.ttsdk.callback.ListAlbumCallBack;
+import com.tingtingfm.ttsdk.callback.SearchAlbumCallBack;
 import com.tingtingfm.ttsdk.entity.AlbumInfo;
+import com.tingtingfm.ttsdk.entity.search.SearchAlbumEntity;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import java.util.List;
@@ -27,14 +25,12 @@ public class AlbumListActivity extends BaseActivity {
     @Bind(R.id.list_three)
     ListView listView;
 
-    Context context;
-    List<AlbumInfo> albumInfos;
-
     String title = "";
     String rType = "";
-    ThreeAdapter adapter;
+    AlbumAdapter adapter;
     private boolean isResume = false;
     private String type;
+    private String keywords;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,13 +38,13 @@ public class AlbumListActivity extends BaseActivity {
         setContentView(R.layout.act_three);
         ButterKnife.bind(this);
 
-        context = this;
         title = getIntent().getStringExtra("title");
         rType = getIntent().getStringExtra("rtype");
         type = getIntent().getStringExtra("type");
+        keywords = getIntent().getStringExtra("keywords");
 
         setTitle(title);
-        adapter = new ThreeAdapter();
+        adapter = new AlbumAdapter(this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,13 +71,9 @@ public class AlbumListActivity extends BaseActivity {
             if ("vod".equals(rType)) {
                 requestAlbumListData(type);
             } else if ("search".equals(rType)) {
-                requestSearchAlbumListData(type);
+                requestSearchAlbumListData(keywords, 1);
             }
         }
-    }
-
-    private void requestSearchAlbumListData(String type) {
-
     }
 
     private void requestAlbumListData(String type) {
@@ -93,7 +85,7 @@ public class AlbumListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<AlbumInfo> response) {
-                albumInfos = response;
+                adapter.setAlbumInfos(response);
                 listView.setAdapter(adapter);
             }
 
@@ -109,50 +101,28 @@ public class AlbumListActivity extends BaseActivity {
         });
     }
 
-
-    class ThreeAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            if (albumInfos == null)
-                return 0;
-
-            return albumInfos.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            if (albumInfos == null)
-                return null;
-
-            return albumInfos.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            if (albumInfos == null)
-                return 0;
-
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (albumInfos == null)
-                return null;
-
-            TextView textView;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_name, null);
-                textView = (TextView) convertView.findViewById(R.id.item_name);
-                convertView.setTag(textView);
-            } else {
-                textView = (TextView) convertView.getTag();
+    public void requestSearchAlbumListData(String keywords, int page) {
+        AsyncData.showSearchAlbum("", keywords, page, new SearchAlbumCallBack() {
+            @Override
+            public void onStart() {
+                show();
             }
 
-            textView.setBackgroundResource(R.drawable.bg);
-            textView.setText(albumInfos.get(position).getName());
-            return convertView;
-        }
+            @Override
+            public void onSuccess(SearchAlbumEntity response) {
+                adapter.setAlbumInfos(response.getData());
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+
+            }
+
+            @Override
+            public void onCancel() {
+                dimiss();
+            }
+        });
     }
 }

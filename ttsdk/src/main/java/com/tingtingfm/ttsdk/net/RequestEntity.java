@@ -86,7 +86,7 @@ public class RequestEntity {
             StringBuilder sb = new StringBuilder();
             for (Iterator<RequestParameter> iter = parameters.iterator(); iter.hasNext();) {
                 RequestParameter p = (RequestParameter)iter.next();
-                sb.append(URLEncoder.encode(p.getName(), ENCODING));
+                sb.append(p.getName());
                 sb.append("=");
                 sb.append(URLEncoder.encode(p.getValue(), ENCODING));
                 sb.append("&");

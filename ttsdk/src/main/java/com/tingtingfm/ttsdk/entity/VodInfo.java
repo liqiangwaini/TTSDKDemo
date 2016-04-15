@@ -9,6 +9,7 @@ public class VodInfo {
     private int duration;
     private String hls;
     private String m4a;
+    private String content_class_name;
 
     public String getName() {
         return name;
@@ -42,6 +43,14 @@ public class VodInfo {
         this.m4a = m4a;
     }
 
+    public String getContentClassName() {
+        return content_class_name;
+    }
+
+    public void setContentClassName(String content_class_name) {
+        this.content_class_name = content_class_name;
+    }
+
     @Override
     public String toString() {
         return "VodInfo{" +
@@ -49,6 +58,7 @@ public class VodInfo {
                 ", duration=" + duration +
                 ", hls='" + hls + '\'' +
                 ", m4a='" + m4a + '\'' +
+                ", content_class_name='" + content_class_name + '\'' +
                 '}';
     }
 }

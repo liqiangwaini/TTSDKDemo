@@ -7,6 +7,7 @@ import com.tingtingfm.ttsdk.callback.ListFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListSelectFmCallBack;
 import com.tingtingfm.ttsdk.callback.ListVodCallBack;
 import com.tingtingfm.ttsdk.callback.SearchAlbumCallBack;
+import com.tingtingfm.ttsdk.callback.SearchFmCallBack;
 import com.tingtingfm.ttsdk.callback.SearchVodCallBack;
 import com.tingtingfm.ttsdk.net.DefaultThreadPool;
 import com.tingtingfm.ttsdk.net.HttpRequest;
@@ -164,7 +165,7 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showSearchFm(String tag, String keyword, int page, SearchAlbumCallBack callBack) {
+    public static void showSearchFm(String tag, String keyword, int page, SearchFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.SEARCH_FM_LIST);
         entity.addParams("keywords", keyword);
         entity.addParams("page", page+"");
