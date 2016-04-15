@@ -3,7 +3,7 @@ package com.tingtingfm.ttsdk;
 /**
  * Created by lqsir on 2016/3/28.
  */
-public class Api {
+public final class Api {
 //    public final static String DOMAIN = "http://open.api.tingtingfm.com";
     public final static String DOMAIN = "http://open.api.dev.ting-ting.cn";
 
@@ -12,7 +12,6 @@ public class Api {
     public final static String FM_SUB_CATEGORY_LIST = DOMAIN + "/v2/broadcast/sub_catelist";
 
     public final static String FM_LIST_DETAIL = DOMAIN + "/v2/broadcast/fm_list";
-
 
     public final static String MUSIC_CATEGORY_LIST = DOMAIN + "/v2/music/catelist";
 

@@ -1,36 +1,30 @@
 package com.tingtingfm.ttsdk.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class BaseUtils {
-    public static String UrlEncodeUnicode(final String s)
-    {
-        if (s == null)
-        {
+    public static String UrlEncodeUnicode(final String s) {
+        if (s == null) {
             return null;
         }
         final int length = s.length();
         final StringBuilder builder = new StringBuilder(length); // buffer
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             final char ch = s.charAt(i);
-            if ((ch & 0xff80) == 0)
-            {
-                if (BaseUtils.IsSafe(ch))
-                {
+            if ((ch & 0xff80) == 0) {
+                if (BaseUtils.IsSafe(ch)) {
                     builder.append(ch);
-                }
-                else if (ch == ' ')
-                {
+                } else if (ch == ' ') {
                     builder.append('+');
-                }
-                else
-                {
+                } else {
                     builder.append('%');
                     builder.append(BaseUtils.IntToHex((ch >> 4) & 15));
                     builder.append(BaseUtils.IntToHex(ch & 15));
                 }
-            }
-            else
-            {
+            } else {
                 builder.append("%u");
                 builder.append(BaseUtils.IntToHex((ch >> 12) & 15));
                 builder.append(BaseUtils.IntToHex((ch >> 8) & 15));
@@ -40,24 +34,19 @@ public class BaseUtils {
         }
         return builder.toString();
     }
-    
-    static char IntToHex(final int n)
-    {
-        if (n <= 9)
-        {
+
+    static char IntToHex(final int n) {
+        if (n <= 9) {
             return (char) (n + 0x30);
         }
         return (char) ((n - 10) + 0x61);
     }
-    
-    static boolean IsSafe(final char ch)
-    {
-        if ((((ch >= 'a') && (ch <= 'z')) || ((ch >= 'A') && (ch <= 'Z'))) || ((ch >= '0') && (ch <= '9')))
-        {
+
+    static boolean IsSafe(final char ch) {
+        if ((((ch >= 'a') && (ch <= 'z')) || ((ch >= 'A') && (ch <= 'Z'))) || ((ch >= '0') && (ch <= '9'))) {
             return true;
         }
-        switch (ch)
-        {
+        switch (ch) {
             case '\'':
             case '(':
             case ')':
@@ -69,5 +58,19 @@ public class BaseUtils {
                 return true;
         }
         return false;
+    }
+
+    public static String inputStreamToString(final InputStream is)
+            throws IOException {
+        String message = "";
+        BufferedReader bufReader = new BufferedReader(new InputStreamReader(
+                is, "gb2312"));
+
+        String line = null;
+        while ((line = bufReader.readLine()) != null) {
+            message += line + "\n";
+        }
+
+        return message;
     }
 }

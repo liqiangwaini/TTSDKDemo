@@ -17,6 +17,7 @@ class ConfigurationManager {
     private RequestManager manager;
     private String key = "";
     private String secret = "";
+    private String sCid = "";
 
     private ConfigurationManager() {
         manager = new RequestManager();
@@ -38,15 +39,23 @@ class ConfigurationManager {
         return manager;
     }
 
+    public Application getApplication() {
+        return application;
+    }
+
     public void setApplication(Application application) {
         this.application = application;
     }
 
     public void saveKey(String key, String secret) {
+        this.key = key;
+        this.secret = secret;
+
         if (application == null)
             return;
 
-        SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE, Context.MODE_PRIVATE);
+        SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString("key", key);
         edit.putString("secret", secret);
@@ -58,7 +67,8 @@ class ConfigurationManager {
             return secret;
 
         if (TextUtils.isEmpty(key)) {
-            SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE, Context.MODE_PRIVATE);
+            SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                    Context.MODE_PRIVATE);
             key = preferences.getString("key", "");
         }
 
@@ -69,11 +79,51 @@ class ConfigurationManager {
         if (application == null)
             return secret;
 
-        if (TextUtils.isEmpty(secret) ) {
-            SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE, Context.MODE_PRIVATE);
+        if (TextUtils.isEmpty(secret)) {
+            SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                    Context.MODE_PRIVATE);
             secret = preferences.getString("secret", "");
         }
 
         return secret;
+    }
+
+    public boolean getStatusForTag(String tag) {
+        SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                Context.MODE_PRIVATE);
+        return preferences.getBoolean(tag, false);
+    }
+
+    public void setStatus(String tag, boolean status) {
+        SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                Context.MODE_PRIVATE);
+        preferences.edit().putBoolean(tag, status).commit();
+    }
+
+
+    public void saveScid(String scid) {
+        this.sCid = scid;
+
+        if (application == null)
+            return;
+
+        SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("scid", scid);
+        edit.commit();
+    }
+
+    public String getScid() {
+        if (application == null)
+            return sCid;
+
+        if (TextUtils.isEmpty(sCid)) {
+            SharedPreferences preferences = application.getSharedPreferences(TTOPENFILE,
+                    Context.MODE_PRIVATE);
+            sCid = preferences.getString("scid", "");
+        }
+
+        return sCid;
     }
 }

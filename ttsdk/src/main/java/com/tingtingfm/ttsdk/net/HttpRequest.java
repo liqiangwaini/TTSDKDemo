@@ -1,14 +1,14 @@
 package com.tingtingfm.ttsdk.net;
 
 import android.os.Handler;
+import android.os.Looper;
+
+import com.tingtingfm.ttsdk.utils.BaseUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,7 +31,7 @@ public final class HttpRequest implements Runnable {
         this.parameter = params;
         requestCallback = callBack;
 
-        handler = new Handler();
+        handler = new Handler(Looper.myLooper());
     }
 
     public HttpRequest(final String tag, final String data, final List<RequestParameter> params,
@@ -84,7 +84,7 @@ public final class HttpRequest implements Runnable {
             if ((requestCallback != null)) {
                 final int statusCode = connection.getResponseCode();
                 if (statusCode == HttpURLConnection.HTTP_OK) {
-                    message = inputStreamToString(connection.getInputStream());
+                    message = BaseUtils.inputStreamToString(connection.getInputStream());
 
                     // 设置回调函数
                     final Response responseInJson = stringToResponse(message);
@@ -129,20 +129,6 @@ public final class HttpRequest implements Runnable {
                 requestCallback.onFail(errorMsg);
             }
         });
-    }
-
-    String inputStreamToString(final InputStream is)
-            throws IOException {
-        String message = "";
-        BufferedReader bufReader = new BufferedReader(new InputStreamReader(
-                is, "gb2312"));
-
-        String line = null;
-        while ((line = bufReader.readLine()) != null) {
-            message += line + "\n";
-        }
-
-        return message;
     }
 
     Response stringToResponse(String message) throws JSONException {

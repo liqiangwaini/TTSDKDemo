@@ -9,9 +9,14 @@ import android.app.Application;
  */
 public class TTAgent {
 
-    public static void init(Application application, String key, String secret) {
+    public static void init(Application application, String key, String secret, int scid) {
         ConfigurationManager.getInstance().setApplication(application);
         ConfigurationManager.getInstance().saveKey(key, secret);
+        ConfigurationManager.getInstance().saveScid(String.valueOf(scid));
+
+        AnalyticsTask.install();
+        AnalyticsTask.active();
+        AnalyticsTask.requestNet();
     }
 
     public static String getOpenKey() {

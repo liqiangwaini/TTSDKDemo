@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("title", "听听精选");
         intent.putExtra("rtype", "select");
         startActivity(intent);
+
     }
 
     private void show() {
