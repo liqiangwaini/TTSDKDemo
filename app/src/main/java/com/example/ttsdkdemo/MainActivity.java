@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public void clickFm() {
         Intent intent = new Intent(MainActivity.this, SecondActivity.class);
         intent.putExtra("title", "听听广播一级分类列表");
-        intent.putExtra("type", "fm");
+        intent.putExtra("rtype", "fm");
         startActivity(intent);
     }
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public void clickMusic() {
         Intent intent = new Intent(MainActivity.this, SecondActivity.class);
         intent.putExtra("title", "听听音乐分类列表");
-        intent.putExtra("type", "music");
+        intent.putExtra("rtype", "music");
         startActivity(intent);
     }
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public void clickVod() {
         Intent intent = new Intent(MainActivity.this, SecondActivity.class);
         intent.putExtra("title", "听听音乐一级分类");
-        intent.putExtra("type", "vod1");
+        intent.putExtra("rtype", "vod");
         startActivity(intent);
     }
 
