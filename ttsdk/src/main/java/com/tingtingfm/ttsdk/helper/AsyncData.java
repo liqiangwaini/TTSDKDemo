@@ -74,7 +74,7 @@ public class AsyncData {
      * @param page
      * @param callBack
      */
-    public static void showMusicFmListForType(String tag, String type, int page, ListSelectFmCallBack callBack) {
+    public static void showMusicFmListForType(String tag, String type, int page, ListFmCallBack callBack) {
         RequestEntity entity = new RequestEntity(tag, Api.MUSIC_FM_LIST_DETAIL);
         entity.addParams("type", type);
         entity.addParams("page", page+"");

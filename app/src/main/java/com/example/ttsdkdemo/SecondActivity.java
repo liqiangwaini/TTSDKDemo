@@ -1,6 +1,5 @@
 package com.example.ttsdkdemo;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import com.tingtingfm.ttsdk.entity.CategoryInfo;
 import com.tingtingfm.ttsdk.helper.AsyncData;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,14 +68,14 @@ public class SecondActivity extends BaseActivity {
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
-                        intent.putExtra("title", "听听广播频率列表");
+                        intent.putExtra("title", "听听广播频率列表 - " + info.getName());
                         intent.putExtra("rtype", rType);
                         intent.putExtra("type", info.getType());
                         startActivity(intent);
                     }
                 } else if ("music".equals(rType)) {
                     Intent intent = new Intent(SecondActivity.this, ThreeActivity.class);
-                    intent.putExtra("title", "听听音乐频率列表");
+                    intent.putExtra("title", "听听音乐频率列表 - " + info.getName());
                     intent.putExtra("rtype", rType);
                     intent.putExtra("type", info.getType());
                     startActivity(intent);
@@ -154,7 +152,9 @@ public class SecondActivity extends BaseActivity {
             @Override
             public void onSuccess(List<CategoryInfo> response) {
 //                System.out.println(response.toString());
-                showContent(response.toString());
+//                showContent(response.toString());
+                values = response;
+                gridView.setAdapter(adapter);
             }
 
             @Override
@@ -244,10 +244,6 @@ public class SecondActivity extends BaseActivity {
                 dimiss();
             }
         });
-    }
-
-    private void showContent(String msg) {
-        new AlertDialog.Builder(this).setMessage(msg).setPositiveButton("ok", null).show();
     }
 
     class SecondAdapter extends BaseAdapter {
