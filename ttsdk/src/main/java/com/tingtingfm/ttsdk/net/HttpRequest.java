@@ -3,6 +3,7 @@ package com.tingtingfm.ttsdk.net;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.tingtingfm.ttsdk.helper.ErrorCode;
 import com.tingtingfm.ttsdk.utils.BaseUtils;
 
 import org.json.JSONException;
@@ -89,7 +90,7 @@ public final class HttpRequest implements Runnable {
                     // 设置回调函数
                     final Response responseInJson = stringToResponse(message);
                     if (responseInJson.hasError()) {
-                        handleNetworkError(responseInJson.getError());
+                        handleNetworkError(responseInJson.getErron(), responseInJson.getError());
                     } else {
                         final Object o = requestCallback.parseNetworkResponse(responseInJson.getData());
                         handler.post(new Runnable() {
@@ -103,17 +104,17 @@ public final class HttpRequest implements Runnable {
                         });
                     }
                 } else {
-                    handleNetworkError("网络异常");
+                    handleNetworkError(statusCode, "network error");
                 }
             }
         } catch (final IllegalArgumentException e) {
-            handleNetworkError("网络异常");
+            handleNetworkError(ErrorCode.errorcode_internal_error, e.getMessage());
         } catch (final UnsupportedEncodingException e) {
-            handleNetworkError("网络异常");
+            handleNetworkError(ErrorCode.errorcode_internal_error, e.getMessage());
         } catch (final JSONException e) {
-            handleNetworkError("解析异常");
+            handleNetworkError(ErrorCode.errorcode_internal_error, e.getMessage());
         } catch (final IOException e) {
-            handleNetworkError("网络异常");
+            handleNetworkError(ErrorCode.errorcode_internal_error, e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -121,12 +122,12 @@ public final class HttpRequest implements Runnable {
         }
     }
 
-    void handleNetworkError(final String errorMsg) {
+    void handleNetworkError(final int code, final String errorMsg) {
         handler.post(new Runnable() {
             @Override
             public void run() {
                 requestCallback.onCancel();
-                requestCallback.onFail(errorMsg);
+                requestCallback.onFail(code, errorMsg);
             }
         });
     }

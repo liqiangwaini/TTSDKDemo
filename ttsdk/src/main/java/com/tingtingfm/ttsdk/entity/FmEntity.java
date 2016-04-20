@@ -7,6 +7,9 @@ import java.util.List;
  */
 public class FmEntity {
     private List<FmInfo> fm_list;
+    /**
+     * 该分类总频率数
+     */
     private int total;
 
     public List<FmInfo> getFmList() {

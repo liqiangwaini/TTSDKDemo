@@ -131,7 +131,7 @@ public class SecondActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -152,14 +152,12 @@ public class SecondActivity extends BaseActivity {
 
             @Override
             public void onSuccess(List<CategoryInfo> response) {
-//                System.out.println(response.toString());
-//                showContent(response.toString());
                 values = response;
                 gridView.setAdapter(adapter);
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -186,7 +184,7 @@ public class SecondActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -211,7 +209,7 @@ public class SecondActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -236,7 +234,7 @@ public class SecondActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 

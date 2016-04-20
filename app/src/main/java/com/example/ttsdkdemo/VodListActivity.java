@@ -85,7 +85,7 @@ public class VodListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -110,7 +110,7 @@ public class VodListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -135,7 +135,7 @@ public class VodListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 

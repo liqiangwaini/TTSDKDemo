@@ -104,7 +104,7 @@ public class FmListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
                 System.out.println(errorMessage);
             }
 
@@ -129,7 +129,7 @@ public class FmListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -154,7 +154,7 @@ dimiss();
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -180,7 +180,7 @@ dimiss();
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 

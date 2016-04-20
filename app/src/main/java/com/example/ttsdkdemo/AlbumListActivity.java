@@ -93,7 +93,7 @@ public class AlbumListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 
@@ -118,7 +118,7 @@ public class AlbumListActivity extends BaseActivity {
             }
 
             @Override
-            public void onFail(String errorMessage) {
+            public void onFail(int code, String errorMessage) {
 
             }
 

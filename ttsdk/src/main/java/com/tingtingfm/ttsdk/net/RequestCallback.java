@@ -5,7 +5,7 @@ public interface RequestCallback<T> {
 
     public void onSuccess(T response);
 
-    public void onFail(String errorMessage);
+    public void onFail(int code, String errorMessage);
 
     public T parseNetworkResponse(String content);
 
