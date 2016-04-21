@@ -12,6 +12,6 @@ public class TSApplicatioin extends Application {
     public void onCreate() {
         super.onCreate();
 
-        TTAgent.init(this, "tingtingfm", "5Gv1QHKO3EEPQM4qFtvkB9JgfnsEgEvV", 10);
+        TTAgent.init(this, "tingtingfm", "5Gv1QHKO3EEPQM4qFtvkB9JgfnsEgEvV", 213);
     }
 }

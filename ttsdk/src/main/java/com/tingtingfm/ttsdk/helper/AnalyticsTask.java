@@ -23,23 +23,25 @@ final class AnalyticsTask {
     final static String CONNECTURL = CHANNEL_URL_DEV + "/record/connect";
 
 
-    public static void install() {
+    static void install() {
         if (!ConfigurationManager.getInstance().getStatusForTag(ANALY_INSTALL)) {//是否已经安装
             request(ANALY_INSTALL, new AnalyticsRequest(INSTALLURL));
         }
     }
 
-    public static void active() {
+    static void active() {
         if (!ConfigurationManager.getInstance().getStatusForTag(ANALY_ACTIVE)) {//是否已经激活
-            request(ANALY_ACTIVE, new AnalyticsRequest(ACTIVIEURL));
+            if (ConfigurationManager.getInstance().getStatusForTag(ANALY_INSTALL)) {
+                request(ANALY_ACTIVE, new AnalyticsRequest(ACTIVIEURL));
+            }
         }
     }
 
-    public static void requestNet() {
+    static void requestNet() {
         request("", new AnalyticsRequest(CONNECTURL));
     }
 
-    public static void request(final String type, final AnalyticsRequest request) {
+    static void request(final String type, final AnalyticsRequest request) {
         new Thread(new Runnable() {
             @Override
             public void run() {
